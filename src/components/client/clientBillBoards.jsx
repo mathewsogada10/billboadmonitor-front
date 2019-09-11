@@ -52,6 +52,7 @@ class ClientBillBoards extends Component {
   }
 
   checkCompetitor = board => {
+    console.log("check board competitors" + board.competitors);
     if (board.competitors.length > 0) {
       return (
         <button
@@ -134,7 +135,7 @@ class ClientBillBoards extends Component {
           owner: board.owner,
           state: board.state,
           street: board.street,
-          action: () => this.checkCompetitor(board)
+          action: this.checkCompetitor(board)
         };
       })
     };
