@@ -5,11 +5,13 @@ import { MDBDataTable } from "mdbreact";
 import Select from "react-select";
 import Axios from "axios";
 import { baseUrl } from "../utils/util";
+import CompetitorModal from "./competitorModalView";
 
 class ClientBillBoards extends Component {
   state = {
     brand: "",
-    boards: []
+    boards: [],
+    competitors: []
   };
   clickHandler = () => {
     history.push("/admin/Board/add");
@@ -51,13 +53,19 @@ class ClientBillBoards extends Component {
     }
   }
 
+  renderModal = competitors => {
+    this.setState({ competitors: competitors });
+  };
+
   checkCompetitor = board => {
     console.log("check board competitors" + board.competitors);
     if (board.competitors.length > 0) {
       return (
         <button
           className="btn btn-primary bt-sm"
-          onClickCapture={() => this.clickManage(board)}
+          data-toggle="modal"
+          data-target="#competitor"
+          onClick={() => this.renderModal(board.competitors)}
         >
           Check Competitor
         </button>
@@ -67,7 +75,7 @@ class ClientBillBoards extends Component {
     }
   };
   render() {
-    var { brand, boards } = this.state;
+    var { brand, boards, competitors } = this.state;
     // var brds = this.state.boards ? this.state.boards : boards;
     // console.log("Loaded Boards:" + brds);
     let data = {
@@ -75,50 +83,42 @@ class ClientBillBoards extends Component {
         {
           label: "ID",
           field: "id",
-          sort: "asc",
-          width: 150
+          sort: "asc"
         },
         {
           label: "Description",
           field: "description",
-          sort: "asc",
-          width: 270
+          sort: "asc"
         },
         {
           label: "Type",
           field: "boardType",
-          sort: "asc",
-          width: 200
+          sort: "asc"
         },
         {
           label: "Latitude",
           field: "latittude",
-          sort: "asc",
-          width: 100
+          sort: "asc"
         },
         {
           label: "Longitude",
           field: "longitude",
-          sort: "asc",
-          width: 150
+          sort: "asc"
         },
         {
           label: "Owner",
           field: "owner",
-          sort: "asc",
-          width: 100
+          sort: "asc"
         },
         {
           label: "State",
           field: "state",
-          sort: "asc",
-          width: 100
+          sort: "asc"
         },
         {
           label: "Street",
           field: "street",
-          sort: "asc",
-          width: 100
+          sort: "asc"
         },
         {
           label: "Action",
@@ -154,6 +154,26 @@ class ClientBillBoards extends Component {
           </div>
           <div>
             <MDBDataTable striped bordered small hover data={data} />
+          </div>
+          <div className="modal" id="competitor">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h4 className="modal-title">Competitors</h4>
+                  <button className="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <CompetitorModal competitors={competitors}></CompetitorModal>
+                </div>
+                <div className="modal-footer">
+                  <button className="btn btn-primary" data-dismiss="modal">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );
