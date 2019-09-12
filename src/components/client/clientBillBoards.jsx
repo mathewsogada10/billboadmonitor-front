@@ -4,7 +4,7 @@ import history from "../../history";
 import { MDBDataTable } from "mdbreact";
 import Select from "react-select";
 import Axios from "axios";
-import { baseUrl } from "../utils/util";
+import { baseUrl, styles } from "../utils/util";
 import CompetitorModal from "./competitorModalView";
 
 class ClientBillBoards extends Component {
@@ -62,7 +62,7 @@ class ClientBillBoards extends Component {
     if (board.competitors.length > 0) {
       return (
         <button
-          className="btn btn-primary bt-sm"
+          className="btn btn-primary btn-sm"
           data-toggle="modal"
           data-target="#competitor"
           onClick={() => this.renderModal(board.competitors)}
@@ -73,6 +73,11 @@ class ClientBillBoards extends Component {
     } else {
       return "No Competitor";
     }
+  };
+
+  formatDecimals = value => {
+    var doubleValue = parseFloat(value);
+    return doubleValue.toFixed(7);
   };
   render() {
     var { brand, boards, competitors } = this.state;
@@ -130,8 +135,8 @@ class ClientBillBoards extends Component {
           id: board.id,
           description: board.description,
           boardType: board.boardType,
-          latittude: board.latittude,
-          longitude: board.longitude,
+          latittude: this.formatDecimals(board.latittude),
+          longitude: this.formatDecimals(board.longitude),
           owner: board.owner,
           state: board.state,
           street: board.street,
@@ -143,7 +148,7 @@ class ClientBillBoards extends Component {
     if (boards.length > 0) {
       console.log("Boards check:" + boards);
       return (
-        <div>
+        <div style={styles}>
           <div>
             <Select
               value={brand}
@@ -153,7 +158,7 @@ class ClientBillBoards extends Component {
             />
           </div>
           <div>
-            <MDBDataTable striped bordered small hover data={data} />
+            <MDBDataTable striped bordered hover data={data} />
           </div>
           <div className="modal" id="competitor">
             <div className="modal-dialog">

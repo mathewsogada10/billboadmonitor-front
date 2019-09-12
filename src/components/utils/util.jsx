@@ -1,6 +1,10 @@
 import axios from "axios";
 export const baseUrl = "http://localhost:8000/";
 
+export const styles = {
+  fontSize: "12px"
+};
+
 export const getBillBoards = async () => {
   let data = [];
   try {

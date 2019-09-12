@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
 import Axios from "axios";
-import { baseUrl } from "../utils/util";
+import { baseUrl, styles } from "../utils/util";
 import { Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -102,7 +102,7 @@ class BoardImages extends Component {
     var { brands } = this.props;
     if (brands) {
       return (
-        <div>
+        <div style={styles}>
           <div>
             <Select
               value={brand}
@@ -162,7 +162,7 @@ class BoardImages extends Component {
                     <td>
                       {" "}
                       <button
-                        className="btn btn-primary bt-sm"
+                        className="btn btn-primary btn-sm"
                         onClick={() => window.open(image.fileContent, "_blank")}
                       >
                         Download image
