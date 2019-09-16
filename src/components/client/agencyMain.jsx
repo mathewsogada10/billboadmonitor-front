@@ -56,7 +56,7 @@ class Main extends Component {
   };
 
   render() {
-    var { isAuthenticated } = this.props;
+    var { isAuthenticated, userAgency } = this.props;
     var { boards, client, agency, brands } = this.state;
     console.log("brands at main" + brands);
     return (
@@ -70,7 +70,7 @@ class Main extends Component {
                 className="col-md-2"
                 style={{ backgroundColor: "green", height: "100vh" }}
               >
-                <MediaAgencies onLoad={this.loadBoards} />
+                <MediaAgencies onLoad={this.loadBoards} userAgency={userAgency} />
               </div>
               <div className="col-md-10">
                 <div>

@@ -30,7 +30,6 @@ class ClientBillBoards extends Component {
 
   handleBrandChange = async brand => {
     var boards = await this.filterBillboard(brand.value);
-    console.log("filtered boards:" + boards);
     this.setState({ brand: brand, boards: boards });
   };
 
@@ -48,7 +47,6 @@ class ClientBillBoards extends Component {
   componentDidUpdate(preProps) {
     if (preProps.boards !== this.props.boards) {
       var boards = this.props.boards;
-      console.log("boards:" + boards);
       this.setState({ boards: boards });
     }
   }
@@ -58,7 +56,6 @@ class ClientBillBoards extends Component {
   };
 
   checkCompetitor = board => {
-    console.log("check board competitors" + board.competitors);
     if (board.competitors.length > 0) {
       return (
         <button

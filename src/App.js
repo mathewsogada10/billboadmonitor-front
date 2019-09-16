@@ -12,9 +12,9 @@ import ImagesDisplay from "./components/client/imagesDisplay";
 function App() {
   return (
     <div className="App">
-      <div className="p-3 mb-2 bg-light text-dark" style={{ height: "100vh" }}>
+      <div className="p-3 mb-2 bg-light" style={{ height: "100vh" }}>
         <div>
-          <h1>Welcome to billboard monitoring system</h1>
+          <h1>Welcome to Outdoor monitoring system</h1>
           <Switch>
             <Route exact path="/" component={withRouter(Login)} />
             <Route exact path="/admin" component={withRouter(AdminLogin)} />

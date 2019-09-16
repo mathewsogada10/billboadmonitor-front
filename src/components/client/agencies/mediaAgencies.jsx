@@ -7,14 +7,18 @@ class MediaAgencies extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      item: null
     };
   }
 
   fetchAgencies = async () => {
+    let { userAgency } = this.props;
     try {
-      let response = await Axios.get(baseUrl + "media/agency/all");
-      this.setState({ items: response.data });
+      let response = await Axios.get(
+        baseUrl + "media/agency/" + userAgency + "/"
+      );
+
+      this.setState({ item: response.data });
     } catch (e) {
       alert("Whoops, an error occured:" + e);
     }
@@ -25,14 +29,16 @@ class MediaAgencies extends Component {
   }
 
   render() {
-    var { items } = this.state;
-    return (
-      <div>
-        {items.map(item => (
-          <MediaAgency key={item.id} agency={item} onLoad={this.props.onLoad} />
-        ))}
-      </div>
-    );
+    var { item } = this.state;
+    if (!!item) {
+      return (
+        <div>
+          <MediaAgency agency={item} onLoad={this.props.onLoad} />
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
   }
 }
 

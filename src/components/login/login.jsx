@@ -5,7 +5,8 @@ import Axios from "axios";
 import { baseUrl } from "./../utils/util";
 import decode from "jwt-decode";
 import { Route, BrowserRouter } from "react-router-dom";
-import Main from "../client/main";
+import Main from "../client/agencyMain";
+import ClientMain from "../client/clientMain";
 //import AdminMain from "./../admin/adminMain";
 
 class Login extends Component {
@@ -16,16 +17,17 @@ class Login extends Component {
       password: "",
       auth: false,
       sessionMsg: "",
-      errorMesg: ""
+      errorMesg: "",
+      user: []
     };
   }
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitHandler = e => {
+  submitHandler = async e => {
     e.preventDefault();
-    Axios.post(baseUrl + "auth-jwt/", this.state)
+    await Axios.post(baseUrl + "auth-jwt/", this.state)
       .then(response => {
         localStorage.setItem("token", response.data.token);
       })
@@ -38,6 +40,7 @@ class Login extends Component {
         console.log(error);
       });
     this.setState({ auth: true });
+    await this.fetchUser();
   };
 
   isAuthenticated = () => {
@@ -50,7 +53,7 @@ class Login extends Component {
       const { exp } = decode(token);
       //check token
       var currentTime = new Date().getTime() / 1000;
-      console.log("Expiry time:" + exp + " current time:" + currentTime);
+      //console.log("Expiry time:" + exp + " current time:" + currentTime);
       if (exp < currentTime) {
         this.setState({
           sessionMsg: "Sorry, Your Session Expired!! Please Login Again."
@@ -63,18 +66,50 @@ class Login extends Component {
     return true;
   };
 
+  fetchUser = async () => {
+    let { user_id } = decode(localStorage.getItem("token"));
+    try {
+      let response = await Axios.get(baseUrl + "user/?id=" + user_id);
+      localStorage.setItem("localUserAgency", response.data[0].agency);
+      localStorage.setItem("localUserClient", response.data[0].client);
+      this.setState({ user: response.data });
+    } catch (e) {
+      console.log("Iko Shida:" + e);
+    }
+  };
+
   render() {
     var { username, password, sessionMsg, errorMesg } = this.state;
     var isAlreadyAuthenticated = this.isAuthenticated();
-    console.log("isAuthenticated=" + isAlreadyAuthenticated);
-    console.log("Token:" + localStorage.getItem("token"));
+    var userAgency = localStorage.getItem("localUserAgency");
+    var userClient = localStorage.getItem("localUserClient");
     return (
       <BrowserRouter>
         {isAlreadyAuthenticated ? (
           <Route
             exact
             path="/"
-            render={props => <Main isAuthenticated={isAlreadyAuthenticated} />}
+            render={props =>
+              userAgency !== "null" ? (
+                <Main
+                  isAuthenticated={isAlreadyAuthenticated}
+                  userAgency={userAgency}
+                />
+              ) : userClient !== "null" ? (
+                <ClientMain
+                  isAuthenticated={isAlreadyAuthenticated}
+                  userClient={userClient}
+                ></ClientMain>
+              ) : (
+                <div>
+                  <p>
+                    Sorry,Credentials have not been authorized to see any
+                    information!!
+                  </p>
+                  <p>Pleas, contact administrator for assistance</p>
+                </div>
+              )
+            }
           />
         ) : (
           <form

@@ -23,7 +23,6 @@ class BrandBoardForm extends Component {
       billboard: this.state.billboard,
       recommendation: this.state.recommendation
     };
-    console.log("Brand Post" + json);
     try {
       let response = await Axios.post(baseUrl + "board/brand/create", json, {
         headers: {

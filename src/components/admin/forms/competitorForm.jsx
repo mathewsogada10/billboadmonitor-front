@@ -37,7 +37,6 @@ class CompetitorForm extends Component {
         }
       );
       let object = response.data;
-      console.log("object json" + object);
       if (object.id > 0) {
         alert(
           "competitor saved => " +
